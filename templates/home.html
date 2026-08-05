@@ -1,0 +1,63 @@
+<!-- Home page -->
+{% extends "base.html" %} {% block title %}Potato Disease Predictor{% endblock
+%} {% block content %}
+<section class="slider">
+  <div class="greeting">
+    <h2>Welcome to the Potato Disease Predictor</h2>
+  </div>
+
+  <img src="/static/images/field1.jpeg" class="active" alt="Slide 1" />
+  <!-- https://stock.adobe.com/uk/search/images?k=potato+field -->
+  <div class="caption active">Healthy Potato Crop</div>
+
+  <img src="/static/images/field2.jpeg" class="active" alt="Slide 2" />
+  <!-- https://www.farmersguide.co.uk/arable/potatoes/growing-potatoes-in-a-more-regenerative-way/ -->
+  <div class="caption">Detect Potato Diseases Early</div>
+  <img src="/static/images/field4.jpeg" class="active" alt="Slide 3" />
+  <!-- https://frymagazine.com/features/non-fish/a-dry-spell/ -->
+
+  <div class="caption">Empowering Farmers with AI</div>
+  <img src="/static/images/field5.jpeg" class="active" alt="Slide 4" />
+  <!-- https://www.potatonewstoday.com/2023/11/25/ai-transforms-canadian-potato-farming-a-leap-towards-smart-agriculture/ -->
+
+  <div class="caption">Protect Your Crops Year Round</div>
+  <img src="/static/images/field7.jpeg" class="active" alt="Slide 5" />
+  <!-- https://www.danspapers.com/2022/06/temik-hamptons-farming-labor-pesticides/ -->
+
+  <div class="caption">Optimize Farming with Smart Insights</div>
+</section>
+
+<section class="hero">
+  <p>
+    We use AI and live weather data to predict potato diseases early, helping
+    farmers make faster and better decisions. This is a beta version powered by
+    a free weather API, which may offer limited data access.
+  </p>
+</section>
+{% endblock %} {% block extra_scripts %}
+<script>
+  // Slider functionality
+  const images = document.querySelectorAll(".slider img");
+  const captions = document.querySelectorAll(".slider .caption");
+  let currentIndex = 0;
+
+  function updateSlider() {
+    // Remove active class from all elements
+    images.forEach((img) => img.classList.remove("active"));
+    captions.forEach((cap) => cap.classList.remove("active"));
+
+    // Add active class to current elements
+    images[currentIndex].classList.add("active");
+    captions[currentIndex].classList.add("active");
+
+    // Move to next index
+    currentIndex = (currentIndex + 1) % images.length;
+  }
+
+  // Initialize first slide
+  updateSlider();
+
+  // Set interval for auto-sliding
+  setInterval(updateSlider, 4000);
+</script>
+{% endblock %}

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Potato Disease Predictor{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <script src="{{ url_for('static', filename='scripts.js') }}" defer></script>
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <!-- Navigation Header -->
+    <header>
+      <h1>Potato Disease Predictor</h1>
+      <div class="menu-toggle" id="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <nav id="nav-menu">
+        <ul>
+          <li><a href="/" {% if request.endpoint == 'home' %}class="active"{% endif %}>Home</a></li>
+          <li><a href="/live-prediction" {% if request.endpoint == 'live_prediction' %}class="active"{% endif %}>Live Prediction</a></li>
+          <li><a href="/input-prediction" {% if request.endpoint == 'input_prediction' %}class="active"{% endif %}>Input Prediction</a></li>
+          <li><a href="/visuals" {% if request.endpoint == 'visuals' %}class="active"{% endif %}>Visuals</a></li>
+          <li><a href="/about" {% if request.endpoint == 'about' %}class="active"{% endif %}>About</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main content area -->
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <section class="footer">
+      <p>&copy; 2025 Potato Disease Predictor. All rights reserved. ~ Raahim</p>
+    </section>
+
+    <!-- Common JavaScript -->
+    <script>
+      // Mobile menu toggle
+      const mobileMenu = document.getElementById("mobile-menu");
+      const navMenu = document.getElementById("nav-menu");
+
+      mobileMenu.addEventListener("click", () => {
+        mobileMenu.classList.toggle("active");
+        navMenu.classList.toggle("active");
+      });
+
+      // Close mobile menu when clicking on a link
+      const navLinks = document.querySelectorAll("nav ul li a");
+      navLinks.forEach((link) => {
+        link.addEventListener("click", () => {
+          mobileMenu.classList.remove("active");
+          navMenu.classList.remove("active");
+        });
+      });
+    </script>
+    
+    {% block extra_scripts %}{% endblock %}
+  </body>
+</html>

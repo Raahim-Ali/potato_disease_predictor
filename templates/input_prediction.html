@@ -1,0 +1,97 @@
+{% extends "base.html" %} {% block title %}Input Prediction{% endblock %} {%
+block content %}
+<section class="content">
+  <h2>Manual Weather Input</h2>
+  <form action="/input-prediction" method="POST">
+    <label for="avg_temp_max">Max Temperature (°C):</label>
+    <input
+      type="number"
+      id="avg_temp_max"
+      name="avg_temp_max"
+      step="0.1"
+      placeholder="Enter maximum temperature"
+      required
+    />
+
+    <label for="avg_temp_min">Min Temperature (°C):</label>
+    <input
+      type="number"
+      id="avg_temp_min"
+      name="avg_temp_min"
+      step="0.1"
+      placeholder="Enter minimum temperature"
+      required
+    />
+
+    <label for="avg_humidity_max">Max Humidity (%):</label>
+    <input
+      type="number"
+      id="avg_humidity_max"
+      name="avg_humidity_max"
+      step="0.1"
+      min="0"
+      max="100"
+      placeholder="Enter maximum humidity"
+      required
+    />
+
+    <label for="avg_humidity_min">Min Humidity (%):</label>
+    <input
+      type="number"
+      id="avg_humidity_min"
+      name="avg_humidity_min"
+      step="0.1"
+      min="0"
+      max="100"
+      placeholder="Enter minimum humidity"
+      required
+    />
+
+    <button type="submit">Predict Disease</button>
+  </form>
+</section>
+
+<section class="results-section">
+  <h2>Prediction Results</h2>
+  {% if prediction %}
+  <div class="result">
+    <p>Predicted Disease: {{ prediction }}</p>
+  </div>
+  {% elif error %}
+  <div class="error">
+    <p>Error: {{ error }}</p>
+  </div>
+  {% else %}
+  <p class="no-results">Enter weather data above to get a disease prediction</p>
+  {% endif %}
+</section>
+{% endblock %} {% block extra_scripts %}
+<script>
+  // Add form validation feedback
+  const form = document.querySelector("form");
+  const inputs = document.querySelectorAll('input[type="number"]');
+
+  inputs.forEach((input) => {
+    input.addEventListener("input", () => {
+      if (input.validity.valid) {
+        input.style.borderColor = "rgba(255, 255, 255, 0.5)";
+      } else {
+        input.style.borderColor = "rgba(255, 68, 68, 0.5)";
+      }
+    });
+  });
+
+  // Form submission feedback
+  form.addEventListener("submit", (e) => {
+    const button = form.querySelector("button");
+    button.textContent = "Predicting...";
+    button.disabled = true;
+
+    // Re enable after a short delay if form doesn't redirect
+    setTimeout(() => {
+      button.textContent = "Predict Disease";
+      button.disabled = false;
+    }, 5000);
+  });
+</script>
+{% endblock %}

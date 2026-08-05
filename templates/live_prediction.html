@@ -1,0 +1,76 @@
+{% extends "base.html" %} {% block title %}Live Prediction{% endblock %} {%
+block content %}
+<section class="content">
+  <h2>Live Predictions</h2>
+  <p>
+    Select a country and city to fetch live weather data and get disease
+    predictions
+  </p>
+
+  <form id="location-form" method="POST">
+    <div class="form-row">
+      <!-- Country Dropdown -->
+      <div class="form-group">
+        <label for="country">Select Country:</label>
+        <select id="country" name="country">
+          <option value="">Select a Country</option>
+          <!-- Countries will be populated -->
+        </select>
+      </div>
+
+      <!-- City Dropdown -->
+      <div class="form-group">
+        <label for="city">Select City:</label>
+        <select id="city" name="city">
+          <option value="">Select a City</option>
+          <!-- Cities will be populated -->
+        </select>
+      </div>
+    </div>
+
+    <!-- Forecast Buttons -->
+    <button name="days" value="6" type="submit">5 Days Forecast</button>
+  </form>
+</section>
+
+<section class="content">
+  <div class="predictions-container">
+    {% if predictions %}
+    <h3>
+      Weather Data & Disease Predictions for {{ city or 'Selected Location' }},
+      {{ country or '' }} - Next {{ days }} Days:
+    </h3>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Min Temp (°C)</th>
+            <th>Max Temp (°C)</th>
+            <th>Min Humidity (%)</th>
+            <th>Max Humidity (%)</th>
+            <th>Predicted Disease</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for prediction in predictions %}
+          <tr>
+            <td>{{ prediction.Date }}</td>
+            <td>{{ "%.1f"|format(prediction.min_temp) }}</td>
+            <td>{{ "%.1f"|format(prediction.max_temp) }}</td>
+            <td>{{ "%.1f"|format(prediction.min_humidity) }}</td>
+            <td>{{ "%.1f"|format(prediction.max_humidity) }}</td>
+            <td>{{ prediction['Predicted Disease'] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% elif error %}
+    <p style="color: red">{{ error }}</p>
+    {% else %}
+    <p>No predictions available</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

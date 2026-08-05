@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block title %}Potato Disease Predictor - Training
+Results{% endblock %} {% block content %}
+<!-- Results Section -->
+<section>
+  <h2 style="text-align: center">Model Training Results</h2>
+  <div class="image-gallery">
+    {% if images.class_wise_accuracy %}
+    <img
+      src="{{ url_for('static', filename='images/' + images.class_wise_accuracy) }}"
+      alt="Class Wise Accuracy"
+      title="Class Wise Accuracy"
+      loading="lazy"
+    />
+    {% endif %} {% if images.confusion_matrix_counts %}
+    <img
+      src="{{ url_for('static', filename='images/' + images.confusion_matrix_counts) }}"
+      alt="Confusion Matrix Counts"
+      title="Confusion Matrix Counts"
+      loading="lazy"
+    />
+    {% endif %} {% if images.confusion_matrix_normalized %}
+    <img
+      src="{{ url_for('static', filename='images/' + images.confusion_matrix_normalized) }}"
+      alt="Confusion Matrix Normalized"
+      title="Confusion Matrix Normalized"
+      loading="lazy"
+    />
+    {% endif %} {% if images.predicted_vs_true_counts %}
+    <img
+      src="{{ url_for('static', filename='images/' + images.predicted_vs_true_counts) }}"
+      alt="Predicted vs True Counts"
+      title="Predicted vs True Counts"
+      loading="lazy"
+    />
+    {% endif %}
+  </div>
+
+  <!-- Show message if no images are available -->
+  {% if not (images.class_wise_accuracy or images.confusion_matrix_counts or
+  images.confusion_matrix_normalized or images.predicted_vs_true_counts) %}
+  <div class="no-results">
+    <h3>No Training Results Available</h3>
+    <p>Train a model first to see visualization results here.</p>
+  </div>
+  {% endif %}
+</section>
+
+<!-- Classification Report -->
+<section class="text-file">
+  <h2>Classification Report</h2>
+  {% if report_file %}
+  <p style="margin-bottom: 30px">
+    Download the detailed classification report with precision, recall, and
+    F1-scores for each disease class.
+  </p>
+  <a
+    href="{{ url_for('static', filename='reports/' + report_file) }}"
+    class="btn"
+    download
+    >Download Report</a
+  >
+  {% else %}
+  <p>
+    No classification report available. Train a model to generate the report.
+  </p>
+  {% endif %}
+</section>
+{% endblock %} {% block extra_scripts %}
+<script>
+  // Image error handling
+  const images = document.querySelectorAll(".image-gallery img");
+  images.forEach((img) => {
+    img.addEventListener("error", function () {
+      this.style.display = "none";
+    });
+
+    img.addEventListener("load", function () {
+      this.style.opacity = "1";
+    });
+  });
+
+  // Add loading state for download button
+  const downloadBtn = document.querySelector(".btn[download]");
+  if (downloadBtn) {
+    downloadBtn.addEventListener("click", function () {
+      const originalText = this.textContent;
+      this.textContent = "Downloading...";
+
+      setTimeout(() => {
+        this.textContent = originalText;
+      }, 2000);
+    });
+  }
+</script>
+{% endblock %}
